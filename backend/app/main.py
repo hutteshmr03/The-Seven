@@ -12,9 +12,23 @@ from .routers import auth, board, gallery, polls, timeline, users, admin_storage
 
 app = FastAPI(title="FriendZone API")
 
+origins = [
+    settings.frontend_origin,
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000",
+]
+
+clean_origins = []
+for o in origins:
+    if o:
+        clean = o.rstrip("/")
+        if clean not in clean_origins:
+            clean_origins.append(clean)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_origin],
+    allow_origins=clean_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -26,6 +40,27 @@ from fastapi import Request, HTTPException
 from fastapi.responses import StreamingResponse
 
 os.makedirs(settings.upload_dir, exist_ok=True)
+
+@app.post("/api/admin/reset-leader")
+def reset_leader(secret: str):
+    """One-time recovery tool: wipes all users and recreates the leader
+    account fresh from current env vars. Protected by SECRET_KEY so randoms
+    can't call it."""
+    if secret != settings.secret_key:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=403, detail="Invalid secret")
+
+    db = SessionLocal()
+    try:
+        users = db.query(models.User).all()
+        for u in users:
+            db.delete(u)
+        db.commit()
+    finally:
+        db.close()
+
+    _seed_leader()
+    return {"status": "done", "leader_username": settings.leader_username}
 
 def send_bytes_range_requests(request: Request, file_path: str, content_type: str):
     file_size = os.path.getsize(file_path)
