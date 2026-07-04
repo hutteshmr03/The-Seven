@@ -1,0 +1,135 @@
+.friend-card {
+  position: relative;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  transform: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+  height: 100%;
+}
+
+.friend-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--marvel-red);
+  box-shadow: 0 15px 35px rgba(230, 36, 41, 0.15);
+}
+
+.friend-photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #252525;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  margin: 0;
+  position: relative;
+}
+.friend-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.friend-card:hover .friend-photo img {
+  transform: scale(1.05);
+}
+
+.friend-photo-initial {
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.friend-card-info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.friend-badge {
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--marvel-red);
+  color: #ffffff;
+  padding: 4px 8px;
+  align-self: flex-start;
+  margin-bottom: 4px;
+  font-family: var(--font-display);
+}
+
+.friend-nickname {
+  font-size: 1.3rem;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.friend-card.big .friend-nickname {
+  font-size: 1.6rem;
+}
+
+.friend-fullname {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Card hover accent line */
+.friend-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 4px;
+  background: var(--marvel-red);
+  transition: width 0.25s ease;
+}
+
+.friend-card:hover::after {
+  width: 100%;
+}
+
+.friend-card-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  padding-top: 6px;
+}
+
+[data-theme="light"] .friend-card-meta-row {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+.card-code {
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.card-clearance {
+  color: var(--marvel-red);
+  font-weight: 900;
+  text-transform: uppercase;
+}

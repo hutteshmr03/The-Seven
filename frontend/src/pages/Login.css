@@ -1,0 +1,340 @@
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: radial-gradient(circle, #1c0e0e 0%, #0c0505 100%);
+  position: relative;
+  overflow-y: auto;
+}
+
+.login-bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  filter: brightness(0.65) contrast(1.05); /* Match the brightness of the video with the dark login theme */
+}
+
+.login-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(230, 36, 41, 0.12) 0%, rgba(0, 0, 0, 0.35) 100%); /* Red gradient tint overlay */
+  z-index: 2;
+}
+
+
+
+.login-card {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  transform: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 5px solid var(--marvel-red);
+  background: rgba(20, 20, 20, 0.78);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 15px rgba(230, 36, 41, 0.2);
+  z-index: 12;
+  padding: 40px;
+  animation: card-appear 0.8s cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+
+/* Logo Glitch Effect */
+.login-brand.glitch-text {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  background: var(--marvel-red);
+  color: #ffffff;
+  padding: 6px 20px;
+  align-self: center;
+  margin-bottom: 5px;
+  user-select: none;
+  position: relative;
+}
+
+.login-brand.glitch-text span {
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+/* Real-time split channel offsets */
+.login-brand.glitch-text::before,
+.login-brand.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--marvel-red);
+  padding: 6px 20px;
+  box-sizing: border-box;
+}
+
+.login-brand.glitch-text::before {
+  left: 2px;
+  text-shadow: -2px 0 #ff00c1;
+  clip-path: rect(10px, 9999px, 30px, 0);
+  animation: glitch-anim 2.5s infinite linear alternate-reverse;
+}
+
+.login-brand.glitch-text::after {
+  left: -2px;
+  text-shadow: -2px 0 #00fff9, 0 2px #00fff9;
+  clip-path: rect(35px, 9999px, 55px, 0);
+  animation: glitch-anim2 2s infinite linear alternate-reverse;
+}
+
+/* Logo SVG Image Container */
+.login-logo-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  user-select: none;
+  animation: logo-pulsate-advanced 2.5s ease-in-out infinite alternate;
+}
+
+.login-logo-image-svg {
+  max-width: 240px;
+  width: 100%;
+  height: auto;
+  /* Convert black SVG to Marvel Red (#e62429) dynamically, and add neon glowing drop shadow */
+  filter: invert(21%) sepia(100%) saturate(7414%) hue-rotate(359deg) brightness(94%) contrast(117%) drop-shadow(0 0 10px rgba(230, 36, 41, 0.75));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.login-logo-image-svg:hover {
+  transform: scale(1.05) rotate(-1deg);
+  filter: invert(21%) sepia(100%) saturate(7414%) hue-rotate(359deg) brightness(94%) contrast(117%) drop-shadow(0 0 18px rgba(230, 36, 41, 0.95));
+}
+
+@keyframes logo-pulsate-advanced {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.03) rotate(-1.5deg);
+  }
+}
+
+/* Glitch header text */
+.illegal-title {
+  color: #ffffff;
+  font-size: 1.45rem !important;
+  text-align: center;
+  letter-spacing: 2px;
+  margin: 0 0 16px 0;
+  text-shadow: 0 0 8px rgba(230, 36, 41, 0.8);
+  animation: text-cyber-flicker 4s infinite;
+  line-height: 1.2;
+}
+
+.login-card p.muted {
+  text-align: center;
+  font-size: 0.85rem;
+  margin: 0 0 10px;
+  color: #888888;
+  letter-spacing: 0.5px;
+}
+
+.login-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #aaaaaa;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.login-label input {
+  background: rgba(18, 16, 16, 0.8);
+  border: 2px solid #444444;
+  color: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-label input:focus {
+  border-color: var(--marvel-red);
+  box-shadow: 0 0 10px rgba(230, 36, 41, 0.4);
+}
+
+.login-error {
+  color: #ff3b30;
+  font-size: 0.85rem;
+  margin: 0;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 5px rgba(255, 59, 48, 0.3);
+  animation: error-shake 0.3s ease;
+}
+
+.login-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 1.1rem;
+  background: var(--marvel-red);
+  border: none;
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  box-shadow: 0 0 15px rgba(230, 36, 41, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.login-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transform: skewX(-30deg);
+  transition: 0.75s;
+}
+
+.login-btn:hover::after {
+  left: 120%;
+}
+
+.login-btn:hover {
+  background: #ff2d32;
+  box-shadow: 0 0 25px rgba(230, 36, 41, 0.6);
+}
+
+/* ANIMATIONS */
+
+@keyframes crt-flicker {
+  0% { opacity: 0.98; }
+  50% { opacity: 1; }
+  100% { opacity: 0.99; }
+}
+
+@keyframes screen-glitch {
+  0%, 93%, 97%, 100% { opacity: 0; }
+  94%, 96% { opacity: 0.15; }
+  95% { opacity: 0.3; }
+}
+
+@keyframes card-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes text-cyber-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: 0 0 8px rgba(230, 36, 41, 0.8), 0 0 20px rgba(230, 36, 41, 0.4);
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    text-shadow: 0 0 2px rgba(230, 36, 41, 0.2);
+    opacity: 0.65;
+  }
+}
+
+@keyframes glitch-anim {
+  0% {
+    clip-path: inset(10% 0 80% 0);
+  }
+  20% {
+    clip-path: inset(40% 0 35% 0);
+  }
+  40% {
+    clip-path: inset(70% 0 10% 0);
+  }
+  60% {
+    clip-path: inset(20% 0 65% 0);
+  }
+  80% {
+    clip-path: inset(85% 0 5% 0);
+  }
+  100% {
+    clip-path: inset(5% 0 85% 0);
+  }
+}
+
+@keyframes glitch-anim2 {
+  0% {
+    clip-path: inset(85% 0 5% 0);
+  }
+  20% {
+    clip-path: inset(15% 0 75% 0);
+  }
+  40% {
+    clip-path: inset(55% 0 30% 0);
+  }
+  60% {
+    clip-path: inset(75% 0 15% 0);
+  }
+  80% {
+    clip-path: inset(30% 0 60% 0);
+  }
+  100% {
+    clip-path: inset(10% 0 85% 0);
+  }
+}
+
+@keyframes error-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+/* Mobile responsive optimizations */
+@media (max-width: 560px) {
+  .login-screen {
+    padding: 20px 10px;
+  }
+  
+  .login-card {
+    padding: 24px 20px;
+    gap: 16px;
+  }
+  
+  .login-brand.glitch-text {
+    font-size: 2rem;
+    padding: 4px 14px;
+  }
+  
+  .login-logo-image-svg {
+    max-width: 170px;
+  }
+  
+  .illegal-title {
+    font-size: 1.15rem !important;
+    letter-spacing: 1px;
+  }
+  
+  .login-btn {
+    padding: 12px 18px;
+    font-size: 1rem;
+  }
+}
