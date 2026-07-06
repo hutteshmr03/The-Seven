@@ -136,11 +136,11 @@ def on_startup():
 
 
 def _seed_leader():
-    """Creates the initial group-leader account if the users table is empty,
-    so there's always a way to log in and start adding friends."""
+    """Creates the initial group-leader account, or updates it if settings changed."""
     db = SessionLocal()
     try:
-        if db.query(models.User).count() == 0:
+        leader = db.query(models.User).filter(models.User.is_leader == True).first()
+        if not leader:
             leader = models.User(
                 username=settings.leader_username,
                 hashed_password=hash_password(settings.leader_password),
@@ -153,6 +153,15 @@ def _seed_leader():
             db.add(leader)
             db.commit()
             print(f"Created group leader account: {settings.leader_username}")
+        else:
+            # If environmental config updated the username or password, synchronize it
+            if leader.username != settings.leader_username or settings.leader_password != "changeme123":
+                leader.username = settings.leader_username
+                leader.hashed_password = hash_password(settings.leader_password)
+                leader.nickname = settings.leader_nickname
+                leader.full_name = settings.leader_full_name
+                db.commit()
+                print(f"Updated group leader account to: {settings.leader_username}")
     finally:
         db.close()
 
