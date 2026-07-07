@@ -195,16 +195,30 @@ export default function Home() {
             {/* Asymmetric Dossier Summary Text */}
             <div className="overview-hero-row">
               <div className="overview-bio-card card">
-                <h2>DECRYPTED COMMAND BRIEFING</h2>
-                <p>
-                  Established by Vought International, **The Seven** represents the apex of corporate meta-human operations. 
-                  This secure portal serves as the unified node for accessing classified crew rosters, sharing operational media logs, 
-                  scheduling mission timelines, and initiating team votes. 
-                </p>
-                <p>
-                  Only the **Group Leader** holds level 07 clearance, enabling the authorization and commissioning of new agent dossiers. 
-                  All other members maintain restricted access profiles bound by their assigned clearance keys.
-                </p>
+                <h2>OPERATIONAL PROTOCOLS</h2>
+                <div className="protocol-directives-grid">
+                  <div className="protocol-node">
+                    <span className="node-icon">🛡️</span>
+                    <div className="node-info">
+                      <h4>SECURE ROSTER</h4>
+                      <p>Classified crew directory. Clearance levels 01-07 required.</p>
+                    </div>
+                  </div>
+                  <div className="protocol-node">
+                    <span className="node-icon">📡</span>
+                    <div className="node-info">
+                      <h4>SECURE COMMS</h4>
+                      <p>Encrypted chat feeds, media sharing, and coordinate transmissions.</p>
+                    </div>
+                  </div>
+                  <div className="protocol-node">
+                    <span className="node-icon">⌛</span>
+                    <div className="node-info">
+                      <h4>CHRONICLES</h4>
+                      <p>Historical record of active field operations and team memories.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Stats Widgets Inline */}
@@ -252,14 +266,10 @@ export default function Home() {
                     </div>
                     <div className="leader-bio-teaser">
                       <div className="dossier-header-row">
-                        <span className="eyebrow-red">FEATURED LEADER</span>
-                        <span className="dossier-id">[CLASSIFIED ID: BOSS-01]</span>
+                        <span className="eyebrow-red">CREW LEADER BRIEFING</span>
+                        <span className="dossier-status text-glow-green">ONLINE</span>
                       </div>
-                      <h1 className="leader-title">{leader.nickname}</h1>
-                      {leader.full_name && <p className="leader-fullname">{leader.full_name}</p>}
                       
-                      <div className="cyber-divider"></div>
-
                       <p className="leader-desc">
                         {leader.about_me || "Directing operations here at The Seven HQ."}
                       </p>
@@ -283,7 +293,7 @@ export default function Home() {
 
                       <div className="dossier-footer-row">
                         <span className="dossier-badge">SYS CLEARANCE LEVEL: MAXIMUM</span>
-                        <span className="dossier-status text-glow-green">STATUS: ACTIVE / DECRYPTED</span>
+                        <span className="dossier-status text-glow-green">SECURE HOST LINKED</span>
                       </div>
                     </div>
                   </div>

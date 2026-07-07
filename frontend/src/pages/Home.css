@@ -981,3 +981,95 @@
 :root.light .log-footer {
   border-top-color: #eaeaea;
 }
+
+/* Operational Protocols / Directives Grid */
+.protocol-directives-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.protocol-node {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.protocol-node:hover {
+  background: rgba(230, 36, 41, 0.05);
+  border-color: rgba(230, 36, 41, 0.25);
+  transform: translateX(6px);
+  box-shadow: 0 6px 15px rgba(230, 36, 41, 0.08);
+}
+
+.node-icon {
+  font-size: 1.8rem;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background-color 0.25s ease;
+}
+
+.protocol-node:hover .node-icon {
+  background: rgba(230, 36, 41, 0.15);
+}
+
+.node-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+}
+
+.node-info h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.node-info p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Light mode adjustments */
+:root.light .protocol-node {
+  background: rgba(0, 0, 0, 0.015);
+  border-color: rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+:root.light .protocol-node:hover {
+  background: rgba(230, 36, 41, 0.03);
+  border-color: rgba(230, 36, 41, 0.15);
+}
+
+:root.light .node-icon {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+:root.light .protocol-node:hover .node-icon {
+  background: rgba(230, 36, 41, 0.08);
+}
+
+:root.light .node-info h4 {
+  color: var(--text-primary);
+}
+
