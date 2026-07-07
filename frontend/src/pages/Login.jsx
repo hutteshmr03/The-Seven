@@ -6,6 +6,7 @@ import "./Login.css";
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const { login } = useAuth();
@@ -52,16 +53,25 @@ export default function Login() {
             autoComplete="off"
           />
         </label>
-        <label className="login-label">
+        <div className="login-label">
           Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            autoComplete="new-password"
-          />
-        </label>
+          <div className="password-input-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="new-password"
+            />
+            <button
+              type="button"
+              className="password-toggle-btn"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "HIDE" : "SHOW"}
+            </button>
+          </div>
+        </div>
 
         {error && <p className="login-error">{error}</p>}
 

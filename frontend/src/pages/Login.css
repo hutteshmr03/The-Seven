@@ -170,11 +170,48 @@
   border: 2px solid #444444;
   color: #ffffff;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
 }
 
 .login-label input:focus {
   border-color: var(--marvel-red);
   box-shadow: 0 0 10px rgba(230, 36, 41, 0.4);
+}
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input-wrapper input {
+  padding-right: 68px; /* Leave space for the SHOW/HIDE button */
+}
+
+.password-toggle-btn {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #888888;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+  user-select: none;
+  z-index: 10;
+}
+
+.password-toggle-btn:hover {
+  color: var(--marvel-red);
 }
 
 .login-error {
