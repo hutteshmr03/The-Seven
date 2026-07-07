@@ -15,6 +15,12 @@ async def save_upload(file: UploadFile) -> str:
     uploads directly to Cloudinary. Otherwise, saves to local disk as fallback."""
     cloudinary_url = os.environ.get("CLOUDINARY_URL") or settings.cloudinary_url
     if cloudinary_url:
+        # Clean any accidental "export CLOUDINARY_URL=" prefix or surrounding quotes
+        cloudinary_url = cloudinary_url.strip()
+        if cloudinary_url.startswith("export CLOUDINARY_URL="):
+            cloudinary_url = cloudinary_url.replace("export CLOUDINARY_URL=", "").strip()
+        cloudinary_url = cloudinary_url.strip("\"'")
+        
         try:
             cloudinary.config(cloudinary_url=cloudinary_url)
             contents = await file.read()
