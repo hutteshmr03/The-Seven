@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic_settings import BaseSettings
 
 
@@ -16,6 +17,7 @@ class Settings(BaseSettings):
 
     upload_dir: str = "uploads"
     max_storage_bytes: int = 50 * 1024 * 1024  # 50 MB default storage limit
+    cloudinary_url: Optional[str] = None
 
     class Config:
         env_file = ".env"

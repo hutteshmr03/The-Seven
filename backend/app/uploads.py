@@ -1,6 +1,8 @@
 import os
 import uuid
 
+import cloudinary
+import cloudinary.uploader
 from fastapi import UploadFile
 
 from .config import settings
@@ -9,7 +11,26 @@ ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp", ".mp4", ".webm",
 
 
 async def save_upload(file: UploadFile) -> str:
-    """Saves an uploaded image to disk and returns its public URL path."""
+    """Saves an uploaded file. If CLOUDINARY_URL environment variable or settings.cloudinary_url is configured,
+    uploads directly to Cloudinary. Otherwise, saves to local disk as fallback."""
+    cloudinary_url = os.environ.get("CLOUDINARY_URL") or settings.cloudinary_url
+    if cloudinary_url:
+        try:
+            cloudinary.config(cloudinary_url=cloudinary_url)
+            contents = await file.read()
+            await file.seek(0)
+            
+            upload_result = cloudinary.uploader.upload(
+                contents,
+                resource_type="auto",
+                folder="friendzone"
+            )
+            return upload_result.get("secure_url")
+        except Exception as e:
+            print(f"Cloudinary upload failed, falling back to local: {e}")
+            await file.seek(0)
+
+    # Local fallback
     ext = os.path.splitext(file.filename or "")[1].lower()
     if ext not in ALLOWED_EXTENSIONS:
         ext = ".jpg"
