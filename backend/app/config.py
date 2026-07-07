@@ -6,8 +6,9 @@ from pydantic_settings import BaseSettings
 _cloudinary_url = os.environ.get("CLOUDINARY_URL")
 if _cloudinary_url:
     _cloudinary_url = _cloudinary_url.strip()
-    if _cloudinary_url.startswith("export CLOUDINARY_URL="):
-        _cloudinary_url = _cloudinary_url.replace("export CLOUDINARY_URL=", "").strip()
+    _idx = _cloudinary_url.find("cloudinary://")
+    if _idx != -1:
+        _cloudinary_url = _cloudinary_url[_idx:].strip()
     _cloudinary_url = _cloudinary_url.strip("\"'")
     os.environ["CLOUDINARY_URL"] = _cloudinary_url
 
