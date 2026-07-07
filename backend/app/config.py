@@ -1,5 +1,15 @@
+import os
 from typing import Optional
 from pydantic_settings import BaseSettings
+
+# Clean CLOUDINARY_URL environment variable before any library auto-initializes
+_cloudinary_url = os.environ.get("CLOUDINARY_URL")
+if _cloudinary_url:
+    _cloudinary_url = _cloudinary_url.strip()
+    if _cloudinary_url.startswith("export CLOUDINARY_URL="):
+        _cloudinary_url = _cloudinary_url.replace("export CLOUDINARY_URL=", "").strip()
+    _cloudinary_url = _cloudinary_url.strip("\"'")
+    os.environ["CLOUDINARY_URL"] = _cloudinary_url
 
 
 class Settings(BaseSettings):
