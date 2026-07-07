@@ -39,7 +39,10 @@ import re
 from fastapi import Request, HTTPException
 from fastapi.responses import StreamingResponse
 
-os.makedirs(settings.upload_dir, exist_ok=True)
+try:
+    os.makedirs(settings.upload_dir, exist_ok=True)
+except Exception as e:
+    print(f"Warning: Could not create upload directory {settings.upload_dir}: {e}")
 
 @app.post("/api/admin/reset-leader")
 def reset_leader(secret: str):
