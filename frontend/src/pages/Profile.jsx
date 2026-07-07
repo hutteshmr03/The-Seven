@@ -118,9 +118,14 @@ export default function Profile() {
     if (!file) return;
     const data = new FormData();
     data.append("file", file);
-    const res = await client.post("/users/me/photo", data);
-    if (isOwnProfile) refreshUser(res.data);
-    load();
+    try {
+      const res = await client.post("/users/me/photo", data);
+      if (isOwnProfile) refreshUser(res.data);
+      load();
+    } catch (err) {
+      console.error("Failed to upload photo:", err);
+      alert(err.response?.data?.detail || "Failed to upload photo");
+    }
   }
 
   async function handleDeleteFriend() {
@@ -355,7 +360,7 @@ export default function Profile() {
             <div className="mini-grid">
               {photos.slice(0, 4).map((p) => (
                 <div className="mini-photo" key={p.id}>
-                  <img src={p.url} alt={p.caption || "photo"} />
+                  <img src={p.url} alt={p.caption || "photo"} loading="lazy" />
                   {p.caption && <span className="mini-caption">{p.caption}</span>}
                 </div>
               ))}

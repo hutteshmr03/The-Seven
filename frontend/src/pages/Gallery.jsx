@@ -320,7 +320,7 @@ export default function Gallery() {
                     <div className="media-play-overlay">▶</div>
                   </div>
                 ) : (
-                  <img src={p.url} alt={p.caption || "gallery item"} className="gallery-image cursor-pointer" onClick={() => setLightbox({ show: true, url: p.url, type: "image" })} />
+                  <img src={p.url} alt={p.caption || "gallery item"} className="gallery-image cursor-pointer" loading="lazy" onClick={() => setLightbox({ show: true, url: p.url, type: "image" })} />
                 )}
                 <span className="gallery-item-tag">{p.category}</span>
               </div>

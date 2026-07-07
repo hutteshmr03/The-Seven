@@ -46,6 +46,7 @@ export default function Timeline() {
       load();
     } catch (err) {
       console.error("Failed to submit memory:", err);
+      alert(err.response?.data?.detail || "Failed to submit memory");
     } finally {
       setSubmitting(false);
     }
@@ -152,6 +153,7 @@ export default function Timeline() {
                     src={m.photo_url} 
                     alt={m.title} 
                     className="timeline-img cursor-pointer" 
+                    loading="lazy"
                     onClick={() => setLightbox({ show: true, url: m.photo_url, type: "image" })} 
                   />
                 )}

@@ -33,8 +33,11 @@ async def save_upload(file: UploadFile) -> str:
             )
             return upload_result.get("secure_url")
         except Exception as e:
-            print(f"Cloudinary upload failed, falling back to local: {e}")
-            await file.seek(0)
+            from fastapi import HTTPException
+            raise HTTPException(
+                status_code=500,
+                detail=f"Cloudinary upload failed: {str(e)}"
+            )
 
     # Local fallback
     ext = os.path.splitext(file.filename or "")[1].lower()
