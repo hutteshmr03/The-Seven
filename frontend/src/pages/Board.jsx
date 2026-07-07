@@ -270,6 +270,40 @@ export default function Board() {
     }
   }
 
+  function getDateLabel(dateStr) {
+    const d = new Date(dateStr);
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    
+    if (d.toDateString() === today.toDateString()) {
+      return "Today";
+    } else if (d.toDateString() === yesterday.toDateString()) {
+      return "Yesterday";
+    } else {
+      return d.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+  }
+
+  function renderAvatar(author) {
+    if (author.photo_url) {
+      return <img src={author.photo_url} alt={author.nickname} className="chat-avatar-img" />;
+    }
+    const initial = author.nickname ? author.nickname.charAt(0).toUpperCase() : "?";
+    let hash = 0;
+    for (let i = 0; i < author.nickname.length; i++) {
+      hash = author.nickname.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const colors = ["#e62429", "#111111", "#007aff", "#34c759", "#5856d6", "#af52de", "#ff9500"];
+    const color = colors[Math.abs(hash) % colors.length];
+    
+    return (
+      <div className="chat-avatar-placeholder" style={{ backgroundColor: color }}>
+        {initial}
+      </div>
+    );
+  }
+
   function formatTime(secs) {
     const mins = Math.floor(secs / 60);
     const remainingSecs = secs % 60;
@@ -291,54 +325,85 @@ export default function Board() {
           ) : posts.length === 0 ? (
             <div className="empty-state">Channel empty. Send the first secure transmission.</div>
           ) : (
-            posts.map((p) => {
+            posts.map((p, index) => {
               const isOwn = p.author.id === user.id;
+              const currentDate = new Date(p.created_at).toDateString();
+              const prevDate = index > 0 ? new Date(posts[index - 1].created_at).toDateString() : null;
+              const showDateSeparator = currentDate !== prevDate;
+              
+              const prevPost = index > 0 ? posts[index - 1] : null;
+              const isConsecutive = prevPost && 
+                                    prevPost.author.id === p.author.id && 
+                                    currentDate === prevDate &&
+                                    (new Date(p.created_at) - new Date(prevPost.created_at)) < 300000;
               return (
-                <div key={p.id} className={`chat-message-row ${isOwn ? "own" : "others"}`}>
-                  <div className="chat-message-container">
-                    {!isOwn && <span className="chat-message-author">{p.author.nickname}</span>}
-                    <div className="chat-message-bubble">
-                      {p.media_url && (
-                        <div className="chat-message-media">
-                          {p.media_type === "video" ? (
-                            <div className="chat-media-video-wrapper cursor-pointer" onClick={() => setLightbox({ show: true, url: p.media_url, type: "video" })}>
-                              <video src={`${p.media_url}#t=0.1`} preload="metadata" className="chat-media-video" />
-                              <div className="media-play-overlay">▶</div>
-                            </div>
-                          ) : p.media_type === "audio" ? (
-                            <div className="chat-audio-wrapper cursor-pointer" onClick={() => setLightbox({ show: true, url: p.media_url, type: "audio" })}>
-                              <audio src={p.media_url} className="chat-audio-player" onClick={(e) => e.stopPropagation()} />
-                              <span className="audio-lightbox-hint">🔍 VIEW FULLSCREEN PLAYER</span>
-                            </div>
-                          ) : p.media_type === "location" ? (
-                            <div className="location-media">
-                              <iframe
-                                title="Shared Location Map"
-                                src={p.media_url}
-                                width="100%"
-                                height="200"
-                                style={{ border: 0 }}
-                                allowFullScreen=""
-                                loading="lazy"
-                              />
-                              <a href={p.media_url.replace("&output=embed", "")} target="_blank" rel="noopener noreferrer" className="location-link-btn">
-                                📍 View Maps Location
-                              </a>
-                            </div>
-                          ) : (
-                            <img src={p.media_url} alt="Uploaded attachment" className="chat-media-image cursor-pointer" onClick={() => setLightbox({ show: true, url: p.media_url, type: "image" })} />
-                          )}
-                        </div>
-                      )}
-                      {p.content && <p className="chat-message-text">{p.content}</p>}
+                <div key={p.id} style={{ display: "contents" }}>
+                  {showDateSeparator && (
+                    <div className="chat-date-separator">
+                      <div className="chat-date-separator-line" />
+                      <span className="chat-date-separator-text">{getDateLabel(p.created_at)}</span>
+                      <div className="chat-date-separator-line" />
                     </div>
-                    <div className="chat-message-meta">
-                      <span>{new Date(p.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                      {user.is_leader && (
-                        <button className="chat-delete-btn" onClick={() => handleDelete(p.id)} title="Delete message">
-                          🗑️
-                        </button>
-                      )}
+                  )}
+                  <div className={`chat-message-row ${isOwn ? "own" : "others"} ${isConsecutive ? "consecutive" : ""}`}>
+                    {!isConsecutive ? (
+                      <div className="chat-avatar-container">
+                        {renderAvatar(p.author)}
+                      </div>
+                    ) : (
+                      <div className="chat-avatar-spacer" />
+                    )}
+                    <div className="chat-message-container">
+                      {!isOwn && !isConsecutive && <span className="chat-message-author">{p.author.nickname}</span>}
+                      <div className="chat-message-bubble-wrapper">
+                        <div className="chat-message-bubble">
+                          {p.media_url && (
+                            <div className="chat-message-media">
+                              {p.media_type === "video" ? (
+                                <div className="chat-media-video-wrapper cursor-pointer" onClick={() => setLightbox({ show: true, url: p.media_url, type: "video" })}>
+                                  <video src={`${p.media_url}#t=0.1`} preload="metadata" className="chat-media-video" />
+                                  <div className="media-play-overlay">▶</div>
+                                </div>
+                              ) : p.media_type === "audio" ? (
+                                <div className="chat-audio-wrapper cursor-pointer" onClick={() => setLightbox({ show: true, url: p.media_url, type: "audio" })}>
+                                  <audio src={p.media_url} className="chat-audio-player" onClick={(e) => e.stopPropagation()} />
+                                  <span className="audio-lightbox-hint">🔍 VIEW FULLSCREEN PLAYER</span>
+                                </div>
+                              ) : p.media_type === "location" ? (
+                                <div className="location-media">
+                                  <iframe
+                                    title="Shared Location Map"
+                                    src={p.media_url}
+                                    width="100%"
+                                    height="200"
+                                    style={{ border: 0 }}
+                                    allowFullScreen=""
+                                    loading="lazy"
+                                  />
+                                  <a href={p.media_url.replace("&output=embed", "")} target="_blank" rel="noopener noreferrer" className="location-link-btn">
+                                    📍 View Maps Location
+                                  </a>
+                                </div>
+                              ) : (
+                                <img src={p.media_url} alt="Uploaded attachment" className="chat-media-image cursor-pointer" onClick={() => setLightbox({ show: true, url: p.media_url, type: "image" })} />
+                              )}
+                            </div>
+                          )}
+                          <div className="chat-message-bubble-content">
+                            {p.content && <p className="chat-message-text">{p.content}</p>}
+                            <span className="chat-message-time-inline">
+                              {new Date(p.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          </div>
+                        </div>
+                        {user.is_leader && (
+                          <div className="chat-message-delete-wrap">
+                            <button className="chat-delete-btn" onClick={() => handleDelete(p.id)} title="Delete message">
+                              🗑️
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
