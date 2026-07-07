@@ -1,7 +1,6 @@
 .chat-page-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 120px);
   gap: 16px;
 }
 
@@ -19,8 +18,9 @@
 .chat-window.card {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  height: 100%;
+  height: 70vh;
+  min-height: 550px;
+  max-height: 85vh;
   padding: 0;
   overflow: hidden;
   border: 1px solid var(--border-color);
@@ -667,8 +667,9 @@
 
 /* Responsive Media Queries */
 @media (max-width: 768px) {
-  .chat-page-container {
-    height: calc(100vh - 150px);
+  .chat-window.card {
+    height: 75vh;
+    min-height: 450px;
   }
   .chat-message-container {
     max-width: 85%;
