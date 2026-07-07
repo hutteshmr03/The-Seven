@@ -266,19 +266,35 @@ export default function Home() {
                     </div>
                     <div className="leader-bio-teaser">
                       <div className="dossier-header-row">
-                        <span className="eyebrow-red">CREW LEADER BRIEFING</span>
-                        <span className="dossier-status text-glow-green">ONLINE</span>
+                        <span className="eyebrow-red">CREW LEADER DOSSIER</span>
+                        <div className="live-link-status">
+                          <span className="status-pulse-dot"></span>
+                          <span className="dossier-status text-glow-green">ONLINE / LINKED</span>
+                        </div>
                       </div>
                       
-                      <p className="leader-desc">
-                        {leader.about_me || "Directing operations here at The Seven HQ."}
-                      </p>
+                      <div className="leader-stats-grid">
+                        <div className="leader-stat-item">
+                          <span className="stat-label">OPERATIONAL ROLE</span>
+                          <span className="stat-val">SUPREME COMMANDER</span>
+                        </div>
+                        <div className="leader-stat-item">
+                          <span className="stat-label">ASSIGNED CODE</span>
+                          <span className="stat-val">BOSS-01</span>
+                        </div>
+                        <div className="leader-stat-item">
+                          <span className="stat-label">SECURITY CLEARANCE</span>
+                          <span className="stat-val text-glow-red">LEVEL 07 ACCESS</span>
+                        </div>
+                      </div>
 
-                      <div className="cyber-divider"></div>
+                      <p className="leader-desc">
+                        "{leader.about_me || "Directing operations here at The Seven HQ."}"
+                      </p>
 
                       {/* Simulated Holographic Log Window */}
                       <div className="terminal-log-window">
-                        <div className="log-window-header">ACTIVE CONSOLE LOGS</div>
+                        <div className="log-window-header">ACTIVE SYSTEM LOGS</div>
                         <div className="log-window-body">
                           {terminalLogs.map((log, index) => (
                             <div className="log-line" key={index}>
@@ -293,7 +309,7 @@ export default function Home() {
 
                       <div className="dossier-footer-row">
                         <span className="dossier-badge">SYS CLEARANCE LEVEL: MAXIMUM</span>
-                        <span className="dossier-status text-glow-green">SECURE HOST LINKED</span>
+                        <span className="dossier-status text-glow-green">ENCRYPTED SH LINKED</span>
                       </div>
                     </div>
                   </div>

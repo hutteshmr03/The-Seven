@@ -358,10 +358,14 @@
 }
 
 .leader-desc {
-  margin: 8px 0 0;
-  font-size: 1.05rem;
+  margin: 12px 0;
+  font-size: 0.95rem;
   line-height: 1.5;
-  color: var(--text-secondary);
+  color: #c8c8c8;
+  font-style: italic;
+  font-family: var(--font-body);
+  border-left: 3px solid var(--marvel-red);
+  padding-left: 14px;
 }
 
 /* Simulated log console window */
@@ -372,8 +376,8 @@
   font-family: 'Courier New', Courier, monospace;
   font-size: 0.72rem;
   color: #ff3c41;
-  margin: 18px 0;
-  height: 110px;
+  margin: 16px 0;
+  height: 135px;
   overflow-y: auto;
 }
 
@@ -1072,4 +1076,78 @@
 :root.light .node-info h4 {
   color: var(--text-primary);
 }
+
+/* Leader Dossier Stats Grid & Live Status styles */
+.leader-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 18px 0;
+  padding: 14px 0;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.leader-stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.stat-label {
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.stat-val {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.live-link-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #27c93f;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 8px #27c93f;
+  animation: pulse-green 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse-green {
+  0% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 0 0 rgba(39, 201, 63, 0.7); }
+  70% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 0 8px rgba(39, 201, 63, 0); }
+  100% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 0 0 rgba(39, 201, 63, 0); }
+}
+
+/* Light mode adjustments for Leader stats */
+:root.light .leader-stats-grid {
+  border-top-color: rgba(0, 0, 0, 0.06);
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+:root.light .stat-val {
+  color: var(--text-primary);
+}
+
+:root.light .leader-desc {
+  color: #333;
+  border-left-color: var(--marvel-red);
+}
+
 
