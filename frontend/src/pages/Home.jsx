@@ -11,7 +11,6 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState("OVERVIEW");
   const [searchTerm, setSearchTerm] = useState("");
   const [clearanceFilter, setClearanceFilter] = useState("ALL");
-  const [terminalLogs, setTerminalLogs] = useState([]);
   const [history, setHistory] = useState([]);
   const [historyLoading, setHistoryLoading] = useState(false);
   const { user: me } = useAuth();
@@ -67,37 +66,6 @@ export default function Home() {
       loadHistory();
     }
   }, [activeTab]);
-
-  // Simulated holographic terminal logs for the Leader Dossier
-  useEffect(() => {
-    if (loading || error) return;
-    
-    const logs = [
-      "INITIALIZING SECURE PROTOCOL CHANNEL...",
-      "USER IDENTITY ACCESS GRANTED: LEADER LEVEL 07",
-      "SYNCING ROSTER DOSSIERS WITH REMOTE ENCRYPTED HOST...",
-      "DATABASE INTEGRITY CHECK: SECURE [100% OK]",
-      "TACTICAL SYSTEM ENGAGED. MONITORING LOGGED CHANNELS...",
-      "WARN: UNAUTHORIZED INTRUSION ATTEMPTS BLOCKED BY FIREWALL",
-      "SYSTEM STATUS: ONLINE. DIRECTIVES OPERATIONAL."
-    ];
-    
-    let currentIdx = 0;
-    setTerminalLogs([`[08:00:12 AM] ${logs[0]}`]);
-    currentIdx++;
-
-    const interval = setInterval(() => {
-      if (currentIdx < logs.length) {
-        const time = new Date().toLocaleTimeString();
-        setTerminalLogs((prev) => [...prev, `[${time}] ${logs[currentIdx]}`]);
-        currentIdx++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 1800);
-
-    return () => clearInterval(interval);
-  }, [loading, error]);
 
   async function handleDeleteUser(e, friendId, friendNickname) {
     e.preventDefault();
@@ -192,60 +160,45 @@ export default function Home() {
         {/* OVERVIEW PANEL */}
         {activeTab === "OVERVIEW" && (
           <div className="tab-panel overview-panel anim-fade-in">
-            {/* Asymmetric Dossier Summary Text */}
-            <div className="overview-hero-row">
-              <div className="overview-bio-card card">
-                <h2>OPERATIONAL PROTOCOLS</h2>
-                <div className="protocol-directives-grid">
-                  <div className="protocol-node">
-                    <span className="node-icon">🛡️</span>
-                    <div className="node-info">
-                      <h4>SECURE ROSTER</h4>
-                      <p>Classified crew directory. Clearance levels 01-07 required.</p>
-                    </div>
-                  </div>
-                  <div className="protocol-node">
-                    <span className="node-icon">📡</span>
-                    <div className="node-info">
-                      <h4>SECURE COMMS</h4>
-                      <p>Encrypted chat feeds, media sharing, and coordinate transmissions.</p>
-                    </div>
-                  </div>
-                  <div className="protocol-node">
-                    <span className="node-icon">⌛</span>
-                    <div className="node-info">
-                      <h4>CHRONICLES</h4>
-                      <p>Historical record of active field operations and team memories.</p>
-                    </div>
-                  </div>
+            {/* Sleek Horizontal Telemetry Dashboard Row */}
+            <div className="telemetry-dashboard-row">
+              <div className="telemetry-card">
+                <div className="telemetry-card-accent"></div>
+                <div className="telemetry-icon-row">
+                  <span className="telemetry-icon">🛡️</span>
+                  <span className="telemetry-badge secure">SECURED</span>
+                </div>
+                <span className="telemetry-label">ROSTER INTEGRITY</span>
+                <div className="telemetry-value-wrap">
+                  <span className="telemetry-value text-glow-red">99.8%</span>
+                </div>
+                <div className="telemetry-progress-bg">
+                  <div className="telemetry-progress-fill red" style={{ width: "99.8%" }}></div>
                 </div>
               </div>
 
-              {/* Stats Widgets Inline */}
-              <div className="overview-stats-column">
-                <div className="telemetry-card">
-                  <span className="telemetry-label">ROSTER INTEGRITY</span>
-                  <div className="telemetry-value-wrap">
-                    <span className="telemetry-value text-glow-red">99.8%</span>
-                    <span className="telemetry-badge secure">SECURED</span>
-                  </div>
-                  <div className="telemetry-progress-bg">
-                    <div className="telemetry-progress-fill red" style={{ width: "99.8%" }}></div>
-                  </div>
+              <div className="telemetry-card">
+                <div className="telemetry-card-accent"></div>
+                <div className="telemetry-icon-row">
+                  <span className="telemetry-icon">📁</span>
+                  <span className="telemetry-badge active">ACTIVE</span>
                 </div>
-                <div className="telemetry-card">
-                  <span className="telemetry-label">ACTIVE DOSSIERS</span>
-                  <div className="telemetry-value-wrap">
-                    <span className="telemetry-value">{users.length}</span>
-                    <span className="telemetry-unit">FILES</span>
-                  </div>
+                <span className="telemetry-label">ACTIVE DOSSIERS</span>
+                <div className="telemetry-value-wrap">
+                  <span className="telemetry-value">{users.length}</span>
+                  <span className="telemetry-unit">FILES</span>
                 </div>
-                <div className="telemetry-card">
-                  <span className="telemetry-label">OPERATIONAL NETWORK</span>
-                  <div className="telemetry-value-wrap">
-                    <span className="telemetry-value text-glow-green">ONLINE</span>
-                    <span className="telemetry-badge active">LIVE</span>
-                  </div>
+              </div>
+
+              <div className="telemetry-card">
+                <div className="telemetry-card-accent"></div>
+                <div className="telemetry-icon-row">
+                  <span className="telemetry-icon">📡</span>
+                  <span className="telemetry-badge active">LIVE</span>
+                </div>
+                <span className="telemetry-label">OPERATIONAL NETWORK</span>
+                <div className="telemetry-value-wrap">
+                  <span className="telemetry-value text-glow-green">ONLINE</span>
                 </div>
               </div>
             </div>
@@ -291,21 +244,6 @@ export default function Home() {
                       <p className="leader-desc">
                         "{leader.about_me || "Directing operations here at The Seven HQ."}"
                       </p>
-
-                      {/* Simulated Holographic Log Window */}
-                      <div className="terminal-log-window">
-                        <div className="log-window-header">ACTIVE SYSTEM LOGS</div>
-                        <div className="log-window-body">
-                          {terminalLogs.map((log, index) => (
-                            <div className="log-line" key={index}>
-                              <span className="log-arrow">&gt;</span> {log}
-                            </div>
-                          ))}
-                          <div className="log-line log-cursor-line">
-                            <span className="log-arrow">&gt;</span> <span className="terminal-cursor">_</span>
-                          </div>
-                        </div>
-                      </div>
 
                       <div className="dossier-footer-row">
                         <span className="dossier-badge">SYS CLEARANCE LEVEL: MAXIMUM</span>
