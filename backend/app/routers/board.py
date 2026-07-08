@@ -14,12 +14,35 @@ router = APIRouter(prefix="/api/board", tags=["board"])
 @router.get("", response_model=list[schemas.PostOut])
 def list_posts(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     """Returns posts ordered by oldest first (chronological order) for chat layout."""
-    return (
+    posts = (
         db.query(models.Post)
-        .options(joinedload(models.Post.comments))
+        .options(
+            joinedload(models.Post.comments),
+            joinedload(models.Post.seen_by)
+        )
         .order_by(models.Post.created_at.asc())
         .all()
     )
+
+    # Automatically mark all loaded posts as seen by current_user
+    existing_seen_ids = set(
+        row[0] for row in db.query(models.PostSeen.post_id)
+        .filter(models.PostSeen.user_id == current_user.id)
+        .all()
+    )
+
+    new_seens = []
+    for post in posts:
+        if post.id not in existing_seen_ids:
+            new_seens.append(models.PostSeen(post_id=post.id, user_id=current_user.id))
+            # Keep in-memory relationship accurate for immediate JSON response
+            post.seen_by.append(current_user)
+
+    if new_seens:
+        db.add_all(new_seens)
+        db.commit()
+
+    return posts
 
 
 @router.post("", response_model=schemas.PostOut)

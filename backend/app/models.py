@@ -105,6 +105,8 @@ class Post(Base):
 
     author = relationship("User", back_populates="posts")
     comments = relationship("Comment", back_populates="post", cascade="all, delete-orphan")
+    seens = relationship("PostSeen", back_populates="post", cascade="all, delete-orphan")
+    seen_by = relationship("User", secondary="post_seen", viewonly=True)
 
 
 class Comment(Base):
@@ -170,3 +172,16 @@ class RelationshipRequest(Base):
 
     sender = relationship("User", foreign_keys=[sender_id])
     receiver = relationship("User", foreign_keys=[receiver_id])
+
+
+class PostSeen(Base):
+    __tablename__ = "post_seen"
+    __table_args__ = (UniqueConstraint("post_id", "user_id", name="uq_post_seen_per_user_per_post"),)
+
+    id = Column(Integer, primary_key=True, index=True)
+    post_id = Column(Integer, ForeignKey("posts.id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    seen_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    post = relationship("Post", back_populates="seens")
+    user = relationship("User")

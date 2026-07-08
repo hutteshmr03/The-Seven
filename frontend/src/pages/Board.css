@@ -773,3 +773,33 @@
 :root.light .chat-audio-wrapper {
   background: #ffffff;
 }
+
+/* Seen / Read Receipts Styles */
+.chat-message-seen-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  cursor: help;
+  vertical-align: middle;
+  color: #8696a0; /* Default subtle grey for others' messages */
+}
+
+.chat-message-row.own .chat-message-seen-inline {
+  color: #53bdeb; /* Light blue read receipt color for own messages */
+}
+
+.seen-icon {
+  font-size: 0.72rem;
+  letter-spacing: -1.5px;
+}
+
+.chat-message-row.own .seen-icon {
+  text-shadow: 0 0 6px rgba(83, 189, 235, 0.6);
+}
+
+.seen-count {
+  font-family: monospace;
+}

@@ -149,6 +149,7 @@ class PostOut(BaseModel):
     created_at: datetime.datetime
     author: UserOut
     comments: list[CommentOut] = []
+    seen_by: list[UserOut] = []
 
 
 # ---------- Polls ----------

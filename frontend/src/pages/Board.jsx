@@ -336,6 +336,7 @@ export default function Board() {
                                     prevPost.author.id === p.author.id && 
                                     currentDate === prevDate &&
                                     (new Date(p.created_at) - new Date(prevPost.created_at)) < 300000;
+              const seenByOthers = p.seen_by ? p.seen_by.filter((u) => u.id !== p.author.id) : [];
               return (
                 <div key={p.id} style={{ display: "contents" }}>
                   {showDateSeparator && (
@@ -393,6 +394,15 @@ export default function Board() {
                             {p.content && <p className="chat-message-text">{p.content}</p>}
                             <span className="chat-message-time-inline">
                               {new Date(p.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                              {seenByOthers.length > 0 && (
+                                <span 
+                                  className="chat-message-seen-inline" 
+                                  title={`Seen by:\n${seenByOthers.map(u => u.nickname).join('\n')}`}
+                                >
+                                  <span className="seen-icon">✓✓</span>
+                                  <span className="seen-count">{seenByOthers.length}</span>
+                                </span>
+                              )}
                             </span>
                           </div>
                         </div>
